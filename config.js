@@ -4,11 +4,30 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, on
 import { getDatabase, ref, set, get, push, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 // إعدادات قاعدة البيانات الخاصة بك
-const firebaseConfig = {
-  apiKey: "AIzaSyCwFqNPtxDFwlBSgzF72DmK8Lgs8THH2vE",
-  databaseURL: "https://smart-pharmcy-5e908-default-rtdb.asia-southeast1.firebasedatabase.app/"
-};
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBBRfP_vYUg_cL2XJEoWQ7P0AhrdagVFL0",
+    authDomain: "medtrack-ad70e.firebaseapp.com",
+    databaseURL: "https://medtrack-ad70e-default-rtdb.firebaseio.com",
+    projectId: "medtrack-ad70e",
+    storageBucket: "medtrack-ad70e.firebasestorage.app",
+    messagingSenderId: "1005427328405",
+    appId: "1:1005427328405:web:afeac50ac507d65512a29c",
+    measurementId: "G-PVGZWJ4V08"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 // تهيئة التطبيق
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
