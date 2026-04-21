@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="setup-body">
+    <div class="app-container" style="padding-bottom: 90px;">
+        <div class="chat-header" style="margin-bottom: 20px;">
+            <h3>Settings</h3>
+        </div>
+
+        <!-- البروفايل -->
+        <div class="med-setup-card" style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+            <i class="fa-solid fa-user-circle" style="font-size: 40px; color: #2F72D1;"></i>
+            <div>
+                <h4 style="margin: 0;">Ahmed Khalil</h4>
+                <p style="font-size: 13px; color: #666;">ahmed@gmail.com</p>
+            </div>
+        </div>
+
+        <!-- الإعدادات -->
+        <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">Account</h4>
+        <div class="med-setup-card" style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                <span><i class="fa-solid fa-bell" style="color: #FFC107; margin-right: 10px;"></i> Notifications</span>
+                <input type="checkbox" checked style="width: 20px; height: 20px;">
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                <span><i class="fa-solid fa-globe" style="color: #2F72D1; margin-right: 10px;"></i> Language</span>
+                <span style="color: #666;">English ></span>
+            </div>
+        </div>
+
+        <!-- زر تسجيل الخروج -->
+        <button onclick="logout()" style="width: 100%; background: #FFEBEB; color: #D32F2F; border: none; padding: 15px; border-radius: 15px; font-weight: bold; cursor: pointer;">
+            <i class="fa-solid fa-right-from-bracket"></i> Log Out
+        </button>
+
+        <!-- القائمة السفلية -->
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <i class="fa-solid fa-house"></i><span>Home</span>
+            </a>
+            <!-- تم إضافة رابط الذكاء الاصطناعي هنا ليكون مميزاً -->
+            <a href="ai-chat.html" class="nav-item add-btn" style="text-decoration: none;">
+                <div class="add-circle" style="background-color: #5CB85C; color: white;">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <span>AI Chat</span>
+            </a>
+            <a href="settings.html" class="nav-item active">
+                <i class="fa-solid fa-gear"></i><span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        function logout() {
+            if(confirm("Are you sure you want to log out?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+<div class="med-setup-card" style="margin-bottom: 20px;">
+    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+        <span><i class="fa-solid fa-language"></i> Language / اللغة</span>
+        <select id="langSelect" onchange="changeLang(this.value)">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+        </select>
+    </div>
+</div>
+
+<script type="module">
+    import { setLanguage, auth } from './config.js';
+    import { signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    // ضبط القائمة المنسدلة على اللغة الحالية
+    document.getElementById('langSelect').value = localStorage.getItem('appLang') || 'en';
+
+    window.changeLang = function(lang) {
+        setLanguage(lang);
+        location.reload(); // إعادة تحميل الصفحة لتطبيق الترجمة على كل شيء
+    }
+
+    window.logout = function() {
+        signOut(auth).then(() => {
+            window.location.href = "index.html";
+        });
+    }
+</script>
+</body>
+</html>

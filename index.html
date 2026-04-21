@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MedTrack Login</title>
+    <!-- استدعاء ملف التصميم -->
+    <link rel="stylesheet" href="style.css">
+    <!-- استدعاء مكتبة الأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <!-- الشعار -->
+        <div class="logo-section">
+            <img src="logo.png" alt="MedTrack Logo" class="logo-img"> 
+            <h1 class="brand-name"><span class="blue-text">Med</span><span class="green-text">Track</span></h1>
+        </div>
+
+        <!-- نموذج تسجيل الدخول -->
+        <form class="login-form" id="loginForm">
+            <!-- حقل البريد الإلكتروني مع دعم تغيير اللغة (data-i18n) -->
+            <div class="input-group">
+                <i class="fa-regular fa-envelope icon"></i>
+                <input type="email" id="email" data-i18n="emailPlaceholder" placeholder="Email" required>
+            </div>
+
+            <!-- حقل كلمة المرور مع دعم تغيير اللغة -->
+            <div class="input-group">
+                <i class="fa-solid fa-lock icon"></i>
+                <input type="password" id="password" data-i18n="passPlaceholder" placeholder="Password" required>
+                <i class="fa-regular fa-eye show-password" id="togglePassword"></i>
+            </div>
+
+            <!-- زر تسجيل الدخول -->
+            <button type="submit" class="login-btn" data-i18n="loginText">Login</button>
+            
+            <!-- نسيان كلمة المرور -->
+            <a href="#" class="forgot-password" onclick="alert('A password reset link has been sent to your email.'); return false;">Forgot password?</a>
+        </form>
+
+        <!-- قسم إنشاء حساب جديد -->
+        <div class="signup-section">
+            <p>Don't have an account? <a href="#" class="signup-link" onclick="alert('Just type a new email and password in the fields above and click Login, the account will be created automatically!'); return false;">Sign Up</a></p>
+        </div>
+    </div>
+
+    <!-- كود الجافاسكربت الخاص بهذه الصفحة (تم دمجه هنا لسهولة العمل) -->
+    <!-- لاحظ أننا نستخدم type="module" لكي يعمل كود Firebase -->
+    <script type="module">
+        // استدعاء إعدادات السيرفر واللغة من ملف config.js
+        import { auth } from './config.js';
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // ==========================================
+        // 1. كود إظهار وإخفاء كلمة المرور (أيقونة العين)
+        // ==========================================
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // ==========================================
+        // 2. كود تسجيل الدخول وإنشاء الحساب مع Firebase
+        // ==========================================
+        const loginForm = document.getElementById('loginForm');
+        
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault(); // منع تحديث الصفحة عند الضغط
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.querySelector('.login-btn');
+            
+            // تغيير شكل الزر أثناء التحميل ليكون احترافياً
+            const originalText = loginBtn.innerText;
+            loginBtn.innerText = "Loading...";
+            loginBtn.disabled = true;
+            loginBtn.style.opacity = "0.7";
+            
+            try {
+                // محاولة تسجيل الدخول
+                await signInWithEmailAndPassword(auth, email, password);
+                // إذا نجح، نوجهه للصفحة الرئيسية
+                window.location.href = "home.html";
+                
+            } catch (error) {
+                // إذا كان الحساب غير موجود (خطأ في تسجيل الدخول)
+                // سنقوم بإنشاء الحساب تلقائياً للتسهيل على المستخدم
+                if(error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+                    try {
+                        await createUserWithEmailAndPassword(auth, email, password);
+                        alert("تم إنشاء حسابك بنجاح! سيتم توجيهك لإعداد أدويتك.");
+                        window.location.href = "setup.html"; // توجيهه لشاشة إعداد الأدوية
+                    } catch(err) {
+                        alert("حدث خطأ أثناء إنشاء الحساب: " + err.message);
+                    }
+                } else {
+                    // أي خطأ آخر مثل (كلمة المرور قصيرة جداً، إيميل خاطئ)
+                    alert("تنبيه: " + error.message);
+                }
+            } finally {
+                // إعادة الزر لحالته الطبيعية إذا حدث خطأ ولم ينتقل للصفحة التالية
+                loginBtn.innerText = originalText;
+                loginBtn.disabled = false;
+                loginBtn.style.opacity = "1";
+            }
+        });
+    </script>
+</body>
+</html>

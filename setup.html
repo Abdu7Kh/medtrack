@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MedTrack - Setup Medications</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="setup-body">
+
+    <div class="app-container setup-container">
+        <!-- ترحيب -->
+        <div class="setup-header">
+            <h2>Welcome to MedTrack!</h2>
+            <p>Let's add your daily 4 medications to track them properly.</p>
+        </div>
+
+        <form id="setupForm" class="setup-form">
+            
+            <!-- الدواء الأول -->
+            <div class="med-setup-card">
+                <h4><i class="fa-solid fa-pills" style="color: #5CB85C;"></i> Medication 1</h4>
+                <div class="input-group">
+                    <input type="text" id="med1Name" placeholder="e.g., Paracetamol" required>
+                </div>
+                <div class="input-group">
+                    <input type="time" id="med1Time" required>
+                </div>
+            </div>
+
+            <!-- الدواء الثاني -->
+            <div class="med-setup-card">
+                <h4><i class="fa-solid fa-pills" style="color: #2F72D1;"></i> Medication 2</h4>
+                <div class="input-group">
+                    <input type="text" id="med2Name" placeholder="e.g., Vitamin D" required>
+                </div>
+                <div class="input-group">
+                    <input type="time" id="med2Time" required>
+                </div>
+            </div>
+
+            <!-- الدواء الثالث -->
+            <div class="med-setup-card">
+                <h4><i class="fa-solid fa-pills" style="color: #FFC107;"></i> Medication 3</h4>
+                <div class="input-group">
+                    <input type="text" id="med3Name" placeholder="e.g., Insulin" required>
+                </div>
+                <div class="input-group">
+                    <input type="time" id="med3Time" required>
+                </div>
+            </div>
+
+            <!-- الدواء الرابع -->
+            <div class="med-setup-card">
+                <h4><i class="fa-solid fa-pills" style="color: #9E9E9E;"></i> Medication 4</h4>
+                <div class="input-group">
+                    <input type="text" id="med4Name" placeholder="e.g., Aspirin" required>
+                </div>
+                <div class="input-group">
+                    <input type="time" id="med4Time" required>
+                </div>
+            </div>
+
+            <!-- زر الحفظ والانتقال للرئيسية -->
+            <button type="submit" class="login-btn">Save & Go to Home</button>
+        </form>
+    </div>
+
+    <script src="setup.js"></script>
+</body>
+</html>

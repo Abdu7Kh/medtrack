@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MedTrack AI Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="home-body">
+
+    <div class="app-container chat-container">
+        <!-- الهيدر -->
+        <header class="chat-header">
+            <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+            <div class="ai-info">
+                <i class="fa-solid fa-robot ai-icon"></i>
+                <h3>MedTrack AI</h3>
+                <span class="status">Online</span>
+            </div>
+        </header>
+
+        <!-- منطقة الرسائل -->
+        <div class="chat-box" id="chatBox">
+            <div class="message ai-message">
+                <p>Hello! I am MedTrack AI. How can I help you today? <br> أهلاً بك! أنا مساعدك الذكي، كيف يمكنني مساعدتك؟</p>
+            </div>
+        </div>
+
+        <!-- منطقة الإدخال والتحدث -->
+        <div class="chat-input-area">
+            <button id="micBtn" class="mic-btn"><i class="fa-solid fa-microphone"></i></button>
+            <input type="text" id="userInput" placeholder="Ask about medications... تحدث معي">
+            <button id="sendBtn" class="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script src="ai-chat.js"></script>
+<script type="module">
+    import { auth } from './config.js';
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const API_KEY = "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";
+    
+    // الميكروفون
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = localStorage.getItem('appLang') === 'ar' ? 'ar-SA' : 'en-US';
+
+    document.getElementById('micBtn').onclick = () => recognition.start();
+    
+    recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript;
+        document.getElementById('userInput').value = text;
+        sendToAI(text);
+    };
+
+    document.getElementById('sendBtn').onclick = () => {
+        const text = document.getElementById('userInput').value;
+        if(text) sendToAI(text);
+    };
+
+    async function sendToAI(text) {
+        addMessage(text, 'user-message');
+        document.getElementById('userInput').value = '';
+        addMessage("جاري التفكير... Thinking...", 'ai-message', 'typing');
+
+        try {
+            let response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: "deepseek/deepseek-chat",
+                    messages:[
+                        { role: "system", content: "أنت مساعد صيدلي و طبيب افتراضي داخل تطبيق MedTrack. أجب باختصار وبشكل طبي. You are a medical assistant in MedTrack app." },
+                        { role: "user", content: text }
+                    ]
+                })
+            });
+
+            let result = await response.json();
+            let reply = result.choices[0].message.content;
+            
+            // إزالة رسالة "جاري التفكير" ووضع الرد الحقيقي
+            document.getElementById('typing').remove();
+            addMessage(reply, 'ai-message');
+            speak(reply); // نطق الرد
+
+        } catch (e) {
+            addMessage("عذراً، تأكد من اتصالك بالإنترنت.", 'ai-message');
+        }
+    }
+
+    function addMessage(text, className, id="") {
+        const chatBox = document.getElementById('chatBox');
+        chatBox.innerHTML += `<div class="message ${className}" id="${id}"><p>${text}</p></div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function speak(text) {
+        const speech = new SpeechSynthesisUtterance(text);
+        speech.lang = localStorage.getItem('appLang') === 'ar' ? 'ar-SA' : 'en-US';
+        window.speechSynthesis.speak(speech);
+    }
+</script>
+</body>
+</html>

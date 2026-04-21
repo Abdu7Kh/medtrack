@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Medication</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="setup-body">
+    <div class="app-container">
+        <div class="chat-header">
+            <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+            <h3>Add New Med</h3>
+        </div>
+        
+        <form id="addSingleMedForm" class="setup-form" style="margin-top: 30px;">
+            <div class="med-setup-card">
+                <div class="input-group">
+                    <input type="text" id="newMedName" placeholder="Medication Name (e.g. Aspirin)" required>
+                </div>
+                <div class="input-group">
+                    <input type="time" id="newMedTime" required>
+                </div>
+            </div>
+            <button type="submit" class="login-btn">Add to Schedule</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addSingleMedForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newMed = {
+                name: document.getElementById('newMedName').value,
+                time: document.getElementById('newMedTime').value
+            };
+            
+            // جلب الأدوية القديمة وإضافة الجديد لها
+            let meds = JSON.parse(localStorage.getItem('myMedications')) ||[];
+            meds.push(newMed);
+            localStorage.setItem('myMedications', JSON.stringify(meds));
+            
+            alert("Medication added successfully!");
+            window.location.href = "home.html"; // العودة للرئيسية لتحديث القائمة
+        });
+    </script>
+</body>
+</html>
