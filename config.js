@@ -1,77 +1,58 @@
-// استدعاء مكتبات Firebase الحديثة
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getDatabase, ref, set, get, push, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+// استدعاء مكتبات Firebase بناءً على الإصدار الموجود في حسابك
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+import { getDatabase, ref, set, get, push, update, onValue } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
 
-// إعدادات قاعدة البيانات الخاصة بك
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+// إعدادات مشروعك أنت (كما أرسلتها لي)
+const firebaseConfig = {
+  apiKey: "AIzaSyBBRfP_vYUg_cL2XJEoWQ7P0AhrdagVFL0",
+  authDomain: "medtrack-ad70e.firebaseapp.com",
+  databaseURL: "https://medtrack-ad70e-default-rtdb.firebaseio.com",
+  projectId: "medtrack-ad70e",
+  storageBucket: "medtrack-ad70e.firebasestorage.app",
+  messagingSenderId: "1005427328405",
+  appId: "1:1005427328405:web:afeac50ac507d65512a29c",
+  measurementId: "G-PVGZWJ4V08"
+};
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBBRfP_vYUg_cL2XJEoWQ7P0AhrdagVFL0",
-    authDomain: "medtrack-ad70e.firebaseapp.com",
-    databaseURL: "https://medtrack-ad70e-default-rtdb.firebaseio.com",
-    projectId: "medtrack-ad70e",
-    storageBucket: "medtrack-ad70e.firebasestorage.app",
-    messagingSenderId: "1005427328405",
-    appId: "1:1005427328405:web:afeac50ac507d65512a29c",
-    measurementId: "G-PVGZWJ4V08"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
 // تهيئة التطبيق
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getDatabase(app);
 
-// ==========================================
-// نظام اللغات (عربي / إنجليزي)
-// ==========================================
+// نظام اللغات الشامل لكل خانات التطبيق
 const translations = {
     en: {
-        loginText: "Login",
-        emailPlaceholder: "Email",
-        passPlaceholder: "Password",
-        nextDose: "Next Dose",
-        markTaken: "Mark as Taken",
-        todayMeds: "Today's Medications",
-        compliance: "Compliance Status",
-        dosesCompleted: "doses completed today",
-        home: "Home",
-        settings: "Settings",
-        aiAsisstant: "AI Chat"
+        login: "Login", email: "Email", password: "Password", forgot: "Forgot password?", signup: "Don't have an account? Sign Up",
+        home: "Home", add: "Add", settings: "Settings", aiChat: "AI Chat",
+        goodMorning: "Good Morning,", nextDose: "Next Dose", markTaken: "Mark as Taken", inMins: "In 45 minutes",
+        todayMeds: "Today's Medications", compliance: "Compliance Status", dosesCompleted: "doses completed today",
+        account: "Account", personalInfo: "Personal Information", changePass: "Change Password", notifications: "Notifications", 
+        language: "Language", appTheme: "App Theme", themeLight: "Light",
+        medicationSec: "Medication", medSchedule: "Medication Schedule", reminders: "Reminders", addMedication: "Add Medication",
+        support: "Support", helpFAQ: "Help & FAQ", contactUs: "Contact Us", logout: "Log Out"
     },
     ar: {
-        loginText: "تسجيل الدخول",
-        emailPlaceholder: "البريد الإلكتروني",
-        passPlaceholder: "كلمة المرور",
-        nextDose: "الجرعة القادمة",
-        markTaken: "تم أخذ الدواء",
-        todayMeds: "أدوية اليوم",
-        compliance: "حالة الالتزام",
-        dosesCompleted: "جرعات مكتملة اليوم",
-        home: "الرئيسية",
-        settings: "الإعدادات",
-        aiAsisstant: "المساعد الذكي"
+        login: "تسجيل الدخول", email: "البريد الإلكتروني", password: "كلمة المرور", forgot: "نسيت كلمة المرور؟", signup: "ليس لديك حساب؟ إنشاء حساب",
+        home: "الرئيسية", add: "إضافة", settings: "الإعدادات", aiChat: "المساعد الذكي",
+        goodMorning: "صباح الخير،", nextDose: "الجرعة القادمة", markTaken: "تأكيد الأخذ", inMins: "خلال 45 دقيقة",
+        todayMeds: "أدوية اليوم", compliance: "حالة الالتزام", dosesCompleted: "جرعات اكتملت اليوم",
+        account: "الحساب", personalInfo: "المعلومات الشخصية", changePass: "تغيير كلمة المرور", notifications: "الإشعارات", 
+        language: "اللغة", appTheme: "مظهر التطبيق", themeLight: "فاتح",
+        medicationSec: "الأدوية", medSchedule: "جدول الأدوية", reminders: "التنبيهات", addMedication: "إضافة دواء جديد",
+        support: "الدعم والمساعدة", helpFAQ: "الأسئلة الشائعة", contactUs: "تواصل معنا", logout: "تسجيل الخروج"
     }
 };
 
 export function setLanguage(lang) {
     localStorage.setItem('appLang', lang);
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'; // تغيير اتجاه الشاشة
-    applyTranslations(lang);
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    location.reload();
 }
 
-function applyTranslations(lang) {
+export function applyLanguage() {
+    const lang = localStorage.getItem('appLang') || 'en';
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     const texts = translations[lang];
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -81,8 +62,3 @@ function applyTranslations(lang) {
         }
     });
 }
-
-// تطبيق اللغة عند فتح التطبيق
-const currentLang = localStorage.getItem('appLang') || 'en';
-applyTranslations(currentLang);
-document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';

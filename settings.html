@@ -2,96 +2,133 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MedTrack Settings</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="setup-body">
     <div class="app-container" style="padding-bottom: 90px;">
-        <div class="chat-header" style="margin-bottom: 20px;">
-            <h3>Settings</h3>
+        <div class="top-header" style="justify-content: flex-start; margin-bottom: 20px;">
+            <img src="logo.png" alt="Logo" class="small-logo">
+            <h2 class="brand-name-small"><span class="blue-text">Med</span><span class="green-text">Track</span></h2>
+            <h3 style="margin-left: auto;" data-i18n="settings">Settings</h3>
         </div>
 
-        <!-- البروفايل -->
-        <div class="med-setup-card" style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-            <i class="fa-solid fa-user-circle" style="font-size: 40px; color: #2F72D1;"></i>
+        <!-- معلومات البروفايل -->
+        <div class="settings-card" style="padding: 15px; display: flex; align-items: center; gap: 15px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width: 50px; border-radius: 50%;">
             <div>
-                <h4 style="margin: 0;">Ahmed Khalil</h4>
-                <p style="font-size: 13px; color: #666;">ahmed@gmail.com</p>
+                <h3 id="userNameDisplay" style="margin-bottom: 5px; font-size: 18px;">Loading...</h3>
+                <p id="userEmailDisplay" style="color: #666; font-size: 14px;"><i class="fa-solid fa-circle-check" style="color: #5CB85C;"></i> </p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="margin-left: auto; color: #ccc;"></i>
+        </div>
+
+        <!-- 1. الحساب (Account) -->
+        <div class="settings-section-title" data-i18n="account">Account</div>
+        <div class="settings-card">
+            <a href="#" class="settings-item">
+                <div class="settings-item-left"><div class="settings-icon icon-blue"><i class="fa-solid fa-user"></i></div> <span data-i18n="personalInfo">Personal Information</span></div>
+                <div class="settings-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <a href="#" class="settings-item" onclick="alert('Password reset link sent to your email.');">
+                <div class="settings-item-left"><div class="settings-icon icon-green"><i class="fa-solid fa-lock"></i></div> <span data-i18n="changePass">Change Password</span></div>
+                <div class="settings-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <div class="settings-item">
+                <div class="settings-item-left"><div class="settings-icon icon-yellow"><i class="fa-solid fa-bell"></i></div> <span data-i18n="notifications">Notifications</span></div>
+                <div class="settings-item-right">
+                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+            </div>
+            <div class="settings-item">
+                <div class="settings-item-left"><div class="settings-icon icon-dark"><i class="fa-solid fa-globe"></i></div> <span data-i18n="language">Language</span></div>
+                <div class="settings-item-right">
+                    <select id="langSelect" style="border:none; background:transparent; color:#666; font-weight:bold; outline:none;">
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </div>
+            <div class="settings-item">
+                <div class="settings-item-left"><div class="settings-icon icon-blue" style="background:#1E88E5;"><i class="fa-solid fa-palette"></i></div> <span data-i18n="appTheme">App Theme</span></div>
+                <div class="settings-item-right"><span data-i18n="themeLight">Light</span> <i class="fa-solid fa-chevron-right"></i></div>
             </div>
         </div>
 
-        <!-- الإعدادات -->
-        <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">Account</h4>
-        <div class="med-setup-card" style="margin-bottom: 20px;">
-            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
-                <span><i class="fa-solid fa-bell" style="color: #FFC107; margin-right: 10px;"></i> Notifications</span>
-                <input type="checkbox" checked style="width: 20px; height: 20px;">
-            </div>
-            <div style="display: flex; justify-content: space-between; padding: 10px 0;">
-                <span><i class="fa-solid fa-globe" style="color: #2F72D1; margin-right: 10px;"></i> Language</span>
-                <span style="color: #666;">English ></span>
-            </div>
+        <!-- 2. الأدوية (Medication) -->
+        <div class="settings-section-title" data-i18n="medicationSec">Medication</div>
+        <div class="settings-card">
+            <a href="home.html" class="settings-item">
+                <div class="settings-item-left"><div class="settings-icon icon-purple"><i class="fa-solid fa-briefcase-medical"></i></div> <span data-i18n="medSchedule">Medication Schedule</span></div>
+                <div class="settings-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <a href="#" class="settings-item">
+                <div class="settings-item-left"><div class="settings-icon icon-yellow"><i class="fa-solid fa-clock"></i></div> <span data-i18n="reminders">Reminders</span></div>
+                <div class="settings-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <a href="add-med.html" class="settings-item">
+                <div class="settings-item-left"><div class="settings-icon icon-green"><i class="fa-solid fa-plus"></i></div> <span data-i18n="addMedication">Add Medication</span></div>
+                <div class="settings-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+        </div>
+
+        <!-- 3. الدعم (Support) -->
+        <div class="settings-section-title" data-i18n="support">Support</div>
+        <div class="settings-card">
+            <a href="#" class="settings-item">
+                <div class="settings-item-left"><div class="settings-icon icon-cyan"><i class="fa-solid fa-circle-question"></i></div> <span data-i18n="helpFAQ">Help & FAQ</span></div>
+                <div class="settings-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <a href="#" class="settings-item">
+                <div class="settings-item-left"><div class="settings-icon icon-red"><i class="fa-solid fa-envelope"></i></div> <span data-i18n="contactUs">Contact Us</span></div>
+                <div class="settings-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
         </div>
 
         <!-- زر تسجيل الخروج -->
-        <button onclick="logout()" style="width: 100%; background: #FFEBEB; color: #D32F2F; border: none; padding: 15px; border-radius: 15px; font-weight: bold; cursor: pointer;">
-            <i class="fa-solid fa-right-from-bracket"></i> Log Out
+        <button id="logoutBtn" class="logout-btn-large">
+            <i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="logout">Log Out</span>
         </button>
 
         <!-- القائمة السفلية -->
         <nav class="bottom-nav">
-            <a href="home.html" class="nav-item">
-                <i class="fa-solid fa-house"></i><span>Home</span>
-            </a>
-            <!-- تم إضافة رابط الذكاء الاصطناعي هنا ليكون مميزاً -->
-            <a href="ai-chat.html" class="nav-item add-btn" style="text-decoration: none;">
-                <div class="add-circle" style="background-color: #5CB85C; color: white;">
-                    <i class="fa-solid fa-robot"></i>
-                </div>
-                <span>AI Chat</span>
-            </a>
-            <a href="settings.html" class="nav-item active">
-                <i class="fa-solid fa-gear"></i><span>Settings</span>
-            </a>
+            <a href="home.html" class="nav-item"><i class="fa-solid fa-house"></i> <span data-i18n="home">Home</span></a>
+            <a href="ai-chat.html" class="nav-item"><i class="fa-solid fa-robot"></i> <span data-i18n="aiChat">AI Chat</span></a>
+            <a href="add-med.html" class="nav-item add-btn" style="text-decoration:none;"><div class="add-circle"><i class="fa-solid fa-plus"></i></div></a>
+            <a href="settings.html" class="nav-item active"><i class="fa-solid fa-gear"></i> <span data-i18n="settings">Settings</span></a>
         </nav>
     </div>
 
-    <script>
-        function logout() {
-            if(confirm("Are you sure you want to log out?")) {
+    <script type="module">
+        import { auth, applyLanguage, setLanguage } from './config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+
+        applyLanguage();
+
+        // عرض بيانات المستخدم الحقيقية
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('userEmailDisplay').innerHTML += user.email;
+                document.getElementById('userNameDisplay').innerText = user.email.split('@')[0]; // استخدام أول جزء من الايميل كاسم
+            } else {
                 window.location.href = "index.html";
             }
-        }
-    </script>
-<div class="med-setup-card" style="margin-bottom: 20px;">
-    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
-        <span><i class="fa-solid fa-language"></i> Language / اللغة</span>
-        <select id="langSelect" onchange="changeLang(this.value)">
-            <option value="en">English</option>
-            <option value="ar">العربية</option>
-        </select>
-    </div>
-</div>
-
-<script type="module">
-    import { setLanguage, auth } from './config.js';
-    import { signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    // ضبط القائمة المنسدلة على اللغة الحالية
-    document.getElementById('langSelect').value = localStorage.getItem('appLang') || 'en';
-
-    window.changeLang = function(lang) {
-        setLanguage(lang);
-        location.reload(); // إعادة تحميل الصفحة لتطبيق الترجمة على كل شيء
-    }
-
-    window.logout = function() {
-        signOut(auth).then(() => {
-            window.location.href = "index.html";
         });
-    }
-</script>
+
+        // تغيير اللغة
+        const langSelect = document.getElementById('langSelect');
+        langSelect.value = localStorage.getItem('appLang') || 'en';
+        langSelect.addEventListener('change', (e) => setLanguage(e.target.value));
+
+        // تسجيل الخروج
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            if(confirm("Are you sure you want to logout?")) {
+                signOut(auth).then(() => window.location.href = "index.html");
+            }
+        });
+    </script>
 </body>
 </html>

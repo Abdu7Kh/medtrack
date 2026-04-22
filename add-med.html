@@ -9,39 +9,67 @@
 </head>
 <body class="setup-body">
     <div class="app-container">
-        <div class="chat-header">
-            <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
-            <h3>Add New Med</h3>
+        <div class="top-header" style="justify-content: flex-start; margin-bottom: 30px;">
+            <a href="settings.html" style="color: #333; font-size: 20px; text-decoration: none;"><i class="fa-solid fa-arrow-left"></i></a>
+            <h3 style="margin-left: 20px;" data-i18n="addMedication">Add Medication</h3>
         </div>
         
-        <form id="addSingleMedForm" class="setup-form" style="margin-top: 30px;">
-            <div class="med-setup-card">
-                <div class="input-group">
-                    <input type="text" id="newMedName" placeholder="Medication Name (e.g. Aspirin)" required>
-                </div>
-                <div class="input-group">
-                    <input type="time" id="newMedTime" required>
-                </div>
+        <form id="addMedForm" class="settings-card" style="padding: 20px; display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label style="font-size: 14px; color: #666; margin-bottom: 5px; display: block;">Medicine Name</label>
+                <input type="text" id="medName" placeholder="e.g., Paracetamol" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; outline: none;">
             </div>
-            <button type="submit" class="login-btn">Add to Schedule</button>
+            
+            <div>
+                <label style="font-size: 14px; color: #666; margin-bottom: 5px; display: block;">Time</label>
+                <input type="time" id="medTime" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; outline: none;">
+            </div>
+
+            <div>
+                <label style="font-size: 14px; color: #666; margin-bottom: 5px; display: block;">Icon Color</label>
+                <select id="medColor" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; outline: none;">
+                    <option value="green-bg">Green</option>
+                    <option value="blue-bg">Blue</option>
+                    <option value="yellow-bg">Yellow</option>
+                </select>
+            </div>
+
+            <button type="submit" class="login-btn" style="margin-top: 10px;" data-i18n="addMedication">Add Medication</button>
         </form>
     </div>
 
-    <script>
-        document.getElementById('addSingleMedForm').addEventListener('submit', function(e) {
+    <script type="module">
+        import { auth, db, applyLanguage } from './config.js';
+        import { push, ref } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+
+        applyLanguage();
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) currentUser = user;
+            else window.location.href = "index.html";
+        });
+
+        document.getElementById('addMedForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const newMed = {
-                name: document.getElementById('newMedName').value,
-                time: document.getElementById('newMedTime').value
-            };
+            const btn = e.target.querySelector('button');
+            btn.innerText = "Saving...";
             
-            // جلب الأدوية القديمة وإضافة الجديد لها
-            let meds = JSON.parse(localStorage.getItem('myMedications')) ||[];
-            meds.push(newMed);
-            localStorage.setItem('myMedications', JSON.stringify(meds));
-            
-            alert("Medication added successfully!");
-            window.location.href = "home.html"; // العودة للرئيسية لتحديث القائمة
+            try {
+                // حفظ الدواء في Firebase
+                await push(ref(db, 'users/' + currentUser.uid + '/medications'), {
+                    name: document.getElementById('medName').value,
+                    time: document.getElementById('medTime').value,
+                    color: document.getElementById('medColor').value,
+                    isTaken: false
+                });
+                alert("Medication added successfully!");
+                window.location.href = "home.html"; // العودة للرئيسية لرؤيته
+            } catch (error) {
+                alert("Error: " + error.message);
+                btn.innerText = "Add Medication";
+            }
         });
     </script>
 </body>
