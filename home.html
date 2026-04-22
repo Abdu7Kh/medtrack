@@ -4,186 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MedTrack - Home</title>
-    <!-- استدعاء نفس ملف التصميم الخاص بنا -->
     <link rel="stylesheet" href="style.css">
-    <!-- استدعاء مكتبة الأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="home-body">
-
-    <!-- الحاوية الرئيسية (شاشة الجوال) -->
     <div class="app-container">
-        
-        <!-- الهيدر (الشعار واسم التطبيق فوق) -->
+        <!-- الهيدر -->
         <header class="top-header">
             <img src="logo.png" alt="Logo" class="small-logo">
             <h2 class="brand-name-small"><span class="blue-text">Med</span><span class="green-text">Track</span></h2>
         </header>
 
-        <!-- قسم الترحيب والتاريخ -->
+        <!-- الترحيب -->
         <section class="greeting-section">
-            <h1>Good Morning, <span class="user-name">Ahmed</span></h1>
-            <p id="currentDate" class="date-text">Today - Tuesday, 12 March<br>08:15 AM</p>
+            <h1><span data-i18n="goodMorning">Good Morning,</span> <span class="user-name" id="userNameHeader">User</span></h1>
+            <p id="currentDate" class="date-text">Loading date...</p>
         </section>
 
-        <!-- بطاقة الجرعة القادمة -->
+        <!-- الجرعة القادمة -->
         <section class="next-dose-card">
-            <h3 class="section-title">Next Dose</h3>
+            <h3 class="section-title" data-i18n="nextDose">Next Dose</h3>
             <div class="medicine-info">
-                <div class="med-icon green-bg">
+                <div class="med-icon green-bg" id="nextMedIcon">
                     <i class="fa-solid fa-capsules"></i>
                 </div>
                 <div class="med-details">
-                    <h4>Paracetamol</h4>
-                    <p>09:00 AM</p>
+                    <h4 id="nextMedName">No Upcoming Meds</h4>
+                    <p id="nextMedTime">--:--</p>
                 </div>
-            </div>
-            <div class="action-row">
-                <span class="time-left">In 45 minutes</span>
-                <button class="mark-taken-btn" id="takenBtn">Mark as Taken</button>
             </div>
         </section>
 
-        <!-- قائمة أدوية اليوم -->
+        <!-- قائمة أدوية اليوم (تم فصل الحاوية لمنع الخلل) -->
         <section class="today-meds">
             <div class="section-header">
-                <h3 class="section-title">Today's Medications</h3>
-                <i class="fa-solid fa-ellipsis"></i>
+                <h3 class="section-title" data-i18n="todayMeds">Today's Medications</h3>
             </div>
-            
-            <!-- الدواء الأول -->
-            <div class="med-item">
-                <div class="med-icon yellow-bg">
-                    <i class="fa-solid fa-pills"></i>
-                </div>
-                <div class="med-details">
-                    <h4>Vitamin D</h4>
-                    <div class="dose-indicators">
-                        <span class="indicator green"></span>
-                        <span class="indicator green"></span>
-                        <span class="indicator blue"></span>
-                    </div>
-                </div>
-                <span class="med-time">12:00 PM</span>
-            </div>
-
-            <!-- الدواء الثاني -->
-            <div class="med-item">
-                <div class="med-icon blue-bg">
-                    <i class="fa-solid fa-prescription-bottle-medical"></i>
-                </div>
-                <div class="med-details">
-                    <h4>Insulin</h4>
-                    <div class="dose-indicators">
-                        <span class="indicator green"></span>
-                        <span class="indicator blue"></span>
-                        <span class="indicator gray"></span>
-                    </div>
-                </div>
-                <span class="med-time">06:00 PM</span>
+            <!-- الأدوية ستظهر هنا -->
+            <div id="medicationsList">
+                <p style="text-align: center; color: #999; padding: 15px;">Loading medications...</p>
             </div>
         </section>
 
-        <!-- شريط التقدم (الالتزام بالأدوية) -->
+        <!-- شريط التقدم الديناميكي -->
         <section class="compliance-card">
             <div class="section-header">
-                <h3 class="section-title">Compliance Status</h3>
-                <i class="fa-solid fa-ellipsis"></i>
+                <h3 class="section-title" data-i18n="compliance">Compliance Status</h3>
             </div>
-            <p class="progress-text"><span id="completedDoses">3</span>/4 doses completed today</p>
+            <!-- الأرقام هنا ستتغير برمجياً حسب عدد الأدوية -->
+            <p class="progress-text">
+                <span id="completedDoses">0</span>/<span id="totalDoses">0</span> <span data-i18n="dosesCompleted">doses completed today</span>
+            </p>
             <div class="progress-bar-container">
-                <div class="progress-bar-fill" style="width: 75%;"></div>
+                <div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div>
             </div>
         </section>
 
-        <!-- القائمة السفلية (Bottom Navigation) -->
-      <!-- القائمة السفلية (Bottom Navigation) -->
+        <!-- القائمة السفلية -->
         <nav class="bottom-nav">
-            <a href="home.html" class="nav-item active">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-            <!-- زر الإضافة ينقلك لصفحة إعداد الأدوية -->
-            <a href="setup.html" class="nav-item add-btn" style="text-decoration: none;">
-                <div class="add-circle">
-                    <i class="fa-solid fa-plus"></i>
-                </div>
-                <span>Add</span>
-            </a>
-            <!-- زر الإعدادات ينقلك لصفحة الإعدادات -->
-            <a href="settings.html" class="nav-item">
-                <i class="fa-solid fa-gear"></i>
-                <span>Settings</span>
-            </a>
+            <a href="home.html" class="nav-item active"><i class="fa-solid fa-house"></i> <span data-i18n="home">Home</span></a>
+            <a href="ai-chat.html" class="nav-item"><i class="fa-solid fa-robot"></i> <span data-i18n="aiChat">AI Chat</span></a>
+            <a href="add-med.html" class="nav-item add-btn" style="text-decoration:none;"><div class="add-circle"><i class="fa-solid fa-plus"></i></div></a>
+            <a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> <span data-i18n="settings">Settings</span></a>
         </nav>
-
     </div>
 
-    <script src="home.js"></script>
-<script type="module">
-    import { auth, db, setLanguage } from './config.js';
-    import { ref, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    <script type="module">
+        import { auth, db, applyLanguage } from './config.js';
+        import { ref, onValue, update } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            loadMedications(user.uid);
-        } else {
-            window.location.href = "index.html"; // طرده إذا لم يكن مسجل دخول
-        }
-    });
+        applyLanguage();
 
-    function loadMedications(uid) {
-        const medsRef = ref(db, 'users/' + uid + '/medications');
-        
-        // استماع مستمر للسيرفر (Realtime)
-        onValue(medsRef, (snapshot) => {
-            const data = snapshot.val();
-            const container = document.querySelector('.today-meds');
-            container.innerHTML = `<h3 class="section-title" data-i18n="todayMeds">Today's Medications</h3>`;
-            
-            let completed = 0;
-            let total = 0;
+        // 1. إعداد التاريخ الحالي
+        const now = new Date();
+        const options = { weekday: 'long', day: 'numeric', month: 'long' };
+        document.getElementById('currentDate').innerHTML = `Today - ${now.toLocaleDateString('en-US', options)}<br>${now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
 
-            if(data) {
-                Object.keys(data).forEach(key => {
-                    const med = data[key];
-                    total++;
-                    if(med.isTaken) completed++;
-
-                    // عرض الدواء
-                    container.innerHTML += `
-                    <div class="med-item">
-                        <div class="med-icon blue-bg"><i class="fa-solid fa-pills"></i></div>
-                        <div class="med-details">
-                            <h4>${med.name}</h4>
-                            <span class="med-time">${med.time}</span>
-                        </div>
-                        <button class="mark-taken-btn ${med.isTaken ? 'taken' : ''}" 
-                                onclick="markAsTaken('${uid}', '${key}')">
-                            ${med.isTaken ? '✔ Done' : 'Take'}
-                        </button>
-                    </div>`;
-                });
+        // 2. التحقق من تسجيل الدخول وجلب البيانات
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('userNameHeader').innerText = user.email.split('@')[0];
+                loadMedications(user.uid);
+            } else {
+                window.location.href = "index.html";
             }
-            
-            // تحديث شريط التقدم
-            document.getElementById('completedDoses').innerText = completed;
-            const progress = total === 0 ? 0 : (completed / total) * 100;
-            document.querySelector('.progress-bar-fill').style.width = progress + "%";
         });
-    }
 
-    // دالة تسجيل أخذ الدواء في السيرفر
-    window.markAsTaken = function(uid, medKey) {
-        const medRef = ref(db, `users/${uid}/medications/${medKey}`);
-        update(medRef, {
-            isTaken: true,
-            timeTaken: new Date().toISOString()
-        }).then(() => {
-            alert("تم تسجيل أخذ الدواء في قاعدة البيانات بنجاح!");
-        });
-    }
-</script>
+        function loadMedications(uid) {
+            const medsRef = ref(db, 'users/' + uid + '/medications');
+            
+            onValue(medsRef, (snapshot) => {
+                const data = snapshot.val();
+                const listContainer = document.getElementById('medicationsList');
+                
+                let completed = 0;
+                let total = 0;
+                listContainer.innerHTML = ''; // تنظيف القائمة
+
+                if (data) {
+                    let firstMed = null; // لمعرفة الجرعة القادمة
+
+                    Object.keys(data).forEach((key, index) => {
+                        const med = data[key];
+                        total++;
+                        if(med.isTaken) completed++;
+                        
+                        if(index === 0) firstMed = med; // جعل أول دواء هو الجرعة القادمة
+
+                        // إنشاء شكل الدواء في القائمة
+                        const isTakenStyle = med.isTaken ? "background-color: #ccc; cursor: not-allowed;" : "background-color: #5CB85C; cursor: pointer;";
+                        const btnText = med.isTaken ? "✔ Done" : "Take";
+
+                        listContainer.innerHTML += `
+                        <div class="med-item" style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="med-icon ${med.color || 'blue-bg'}"><i class="fa-solid fa-pills"></i></div>
+                                <div>
+                                    <h4 style="margin:0; font-size: 16px; color: #333;">${med.name}</h4>
+                                    <span style="font-size: 13px; color: #777;">${med.time}</span>
+                                </div>
+                            </div>
+                            <button style="border: none; padding: 8px 15px; border-radius: 20px; color: white; font-weight: bold; ${isTakenStyle}" 
+                                    onclick="window.markAsTaken('${uid}', '${key}', ${med.isTaken})">
+                                ${btnText}
+                            </button>
+                        </div>`;
+                    });
+
+                    // تحديث الجرعة القادمة في الأعلى
+                    if (firstMed) {
+                        document.getElementById('nextMedName').innerText = firstMed.name;
+                        document.getElementById('nextMedTime').innerText = firstMed.time;
+                        document.getElementById('nextMedIcon').className = `med-icon ${firstMed.color || 'green-bg'}`;
+                    }
+
+                } else {
+                    // إذا لم يضف أي دواء بعد
+                    listContainer.innerHTML = '<p style="text-align: center; color: #999; padding: 15px;">No medications added yet.</p>';
+                    document.getElementById('nextMedName').innerText = "No Upcoming Meds";
+                    document.getElementById('nextMedTime').innerText = "--:--";
+                }
+
+                // تحديث أرقام شريط التقدم ديناميكياً
+                document.getElementById('completedDoses').innerText = completed;
+                document.getElementById('totalDoses').innerText = total;
+                const progressPercentage = total === 0 ? 0 : (completed / total) * 100;
+                document.getElementById('progressBar').style.width = progressPercentage + "%";
+            });
+        }
+
+        // دالة تسجيل أخذ الدواء (مربوطة بالسيرفر)
+        window.markAsTaken = function(uid, medKey, isAlreadyTaken) {
+            if(isAlreadyTaken) return; // إذا أخذه مسبقاً، لا يفعل شيئاً
+            const medRef = ref(db, `users/${uid}/medications/${medKey}`);
+            update(medRef, { isTaken: true }).then(() => {
+                // سيتحدث الواجهة تلقائياً بسبب onValue
+            });
+        }
+    </script>
 </body>
 </html>
