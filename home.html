@@ -84,7 +84,9 @@
         // 2. التحقق من تسجيل الدخول وجلب البيانات
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                document.getElementById('userNameHeader').innerText = user.email.split('@')[0];
+                // جلب الاسم الذي أدخله المريض أو وضع اسم افتراضي
+                const name = localStorage.getItem('patientName') || 'Guest';
+                document.getElementById('userNameHeader').innerText = name;
                 loadMedications(user.uid);
             } else {
                 window.location.href = "index.html";
