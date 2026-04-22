@@ -119,12 +119,13 @@
         applyLanguage();
         let currentUserEmail = "";
 
-        // جلب بيانات المستخدم الحقيقية من السيرفر
+        // جلب بيانات المستخدم
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                currentUserEmail = user.email;
-                document.getElementById('userEmailDisplay').innerHTML += user.email;
-                document.getElementById('userNameDisplay').innerText = user.email.split('@')[0];
+                const name = localStorage.getItem('patientName') || 'Guest';
+                // بما أنه لا يوجد إيميل الآن، سنعرض ID سري أو رقم المريض
+                document.getElementById('userEmailDisplay').innerHTML = `<i class="fa-solid fa-id-card"></i> Patient ID: ${user.uid.substring(0, 8)}`;
+                document.getElementById('userNameDisplay').innerText = name;
             } else {
                 window.location.href = "index.html";
             }
